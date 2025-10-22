@@ -1,27 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Generate a simple User ID using timestamp
-  const userId = Date.now();
+  // ✅ Check if user already has an ID saved
+  let userId = localStorage.getItem("melodyVaultUserID");
+  if (!userId) {
+    userId = "USER-" + Date.now();
+    localStorage.setItem("melodyVaultUserID", userId);
+  }
   document.getElementById("userId").textContent = userId;
 
-  // DOM Elements
+  // DOM elements
   const songList = document.getElementById("songList");
   const emptyMessage = document.getElementById("emptyMessage");
-  const addSongButton = document.getElementById("addSongButton");
   const fileInput = document.getElementById("songFileInput");
+  const addSongButton = document.getElementById("addSongButton");
 
-  // Load stored songs from localStorage
+  // ✅ Load songs from localStorage
   let songs = JSON.parse(localStorage.getItem("songs")) || [];
 
-  // Update UI with songs
+  // ✅ Show Songs List
   function updateSongList() {
-    songList.innerHTML = ""; // Clear existing
+    songList.innerHTML = "";
 
     if (songs.length === 0) {
       emptyMessage.style.display = "block";
       return;
-    } else {
-      emptyMessage.style.display = "none";
     }
+    emptyMessage.style.display = "none";
 
     songs.forEach((song, index) => {
       const li = document.createElement("li");
@@ -32,38 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
         <audio controls src="${song.url}" style="width: 100%; margin-top: 10px;"></audio>
       `;
 
+      // ✅ If song belongs to this user → Show Delete button
+      if (song.ownerId === userId) {
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "❌ Delete";
+        deleteButton.classList.add("delete-btn");
+        deleteButton.onclick = () => {
+          songs.splice(index, 1);
+          localStorage.setItem("songs", JSON.stringify(songs));
+          updateSongList();
+        };
+        li.appendChild(deleteButton);
+      }
+
       songList.appendChild(li);
     });
 
-    // Save updated song list to localStorage
     localStorage.setItem("songs", JSON.stringify(songs));
   }
 
-  // Open file input when "Upload Song" is clicked
-  addSongButton.addEventListener("click", () => {
-    fileInput.click();
-  });
+  // ✅ Upload MP3 File
+  addSongButton.addEventListener("click", () => fileInput.click());
 
-  // Handle file upload
   fileInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
-
     if (file && file.type === "audio/mpeg") {
       const reader = new FileReader();
       reader.onload = function(e) {
-        const songData = {
+        songs.push({
           name: file.name,
-          url: e.target.result // Base64 data URL
-        };
-        songs.push(songData);
+          url: e.target.result,
+          ownerId: userId // ✅ Only owner can delete
+        });
+        localStorage.setItem("songs", JSON.stringify(songs));
         updateSongList();
       };
-      reader.readAsDataURL(file); // Convert file to Base64 string
+      reader.readAsDataURL(file);
     } else {
-      alert("Please upload a valid MP3 file.");
+      alert("Only MP3 files are allowed!");
     }
   });
 
-  // Initial display
   updateSongList();
 });
