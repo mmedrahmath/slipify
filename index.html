@@ -7,33 +7,25 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Navigation Bar -->
   <header class="navbar">
     <h1>Melody Vault</h1>
     <div class="user-info">User ID: <span id="userId"></span></div>
     <div class="nav-buttons">
-      <button id="playlistButton" class="glow-btn">✨ Get Playlist Ideas</button>
-      <button id="addSongButton" class="add-btn">＋ Add Song</button>
+      <button id="getPlaylist" class="glow-btn">✨ Get Playlist Ideas</button>
+      <button id="addSongButton" class="add-btn">＋ Upload Song</button>
+      <input type="file" id="songFileInput" accept="audio/mp3" style="display: none;">
     </div>
   </header>
 
+  <!-- Main Content -->
   <main>
     <section class="collection-section">
       <h2>My Collection</h2>
-      <p id="emptyMessage">No songs in your vault <span>yet.</span> Click 'Add Song' to begin!</p>
+      <p id="emptyMessage">No songs in your vault yet. Click 'Upload Song' to begin!</p>
       <ul id="songList"></ul>
     </section>
   </main>
-
-  <!-- Add Song Modal -->
-  <div id="songModal" class="modal">
-    <div class="modal-content">
-      <h3>Add a New Song</h3>
-      <input type="text" id="songTitle" placeholder="Song Title">
-      <input type="text" id="songArtist" placeholder="Artist">
-      <button id="saveSong">Save Song</button>
-      <button id="closeModal" class="cancel-btn">Cancel</button>
-    </div>
-  </div>
 
   <script src="script.js"></script>
 </body>
