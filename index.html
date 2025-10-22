@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melody Vault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <h1>Melody Vault</h1>
+    <div class="user-info">User ID: <span id="userId"></span></div>
+    <div class="nav-buttons">
+      <button id="playlistButton" class="glow-btn">✨ Get Playlist Ideas</button>
+      <button id="addSongButton" class="add-btn">＋ Add Song</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="collection-section">
+      <h2>My Collection</h2>
+      <p id="emptyMessage">No songs in your vault <span>yet.</span> Click 'Add Song' to begin!</p>
+      <ul id="songList"></ul>
+    </section>
+  </main>
+
+  <!-- Add Song Modal -->
+  <div id="songModal" class="modal">
+    <div class="modal-content">
+      <h3>Add a New Song</h3>
+      <input type="text" id="songTitle" placeholder="Song Title">
+      <input type="text" id="songArtist" placeholder="Artist">
+      <button id="saveSong">Save Song</button>
+      <button id="closeModal" class="cancel-btn">Cancel</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
